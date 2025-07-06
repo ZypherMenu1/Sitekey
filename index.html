@@ -3,102 +3,126 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🔑 Obtenha Sua Chave</title>
+    <title>Chave Liberada!</title>
     <style>
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
-            color: white;
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
+        
+        :root {
+            --primary: #6c5ce7;
+            --secondary: #a29bfe;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+        }
+        
+        * {
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: var(--dark);
+            min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 100vh;
+            padding: 20px;
+        }
+        
+        .key-container {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 450px;
+            padding: 40px;
             text-align: center;
         }
-        .container {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-            max-width: 500px;
-            width: 90%;
-        }
+        
         h1 {
-            margin-bottom: 20px;
-            font-size: 24px;
+            color: var(--primary);
+            margin-bottom: 25px;
+            font-size: 28px;
+            font-weight: 600;
         }
-        .key {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 15px;
+        
+        .key-display {
+            background: #f1f3f5;
+            padding: 20px;
             border-radius: 8px;
-            font-family: monospace;
-            font-size: 18px;
-            margin: 20px 0;
+            margin: 25px 0;
+            font-size: 20px;
+            font-weight: 500;
+            letter-spacing: 1px;
+            color: var(--dark);
+            border: 2px dashed #dee2e6;
             word-break: break-all;
         }
-        .btn {
-            background: white;
-            color: #2575fc;
+        
+        .copy-btn {
+            background: var(--primary);
+            color: white;
             border: none;
-            padding: 12px 25px;
+            padding: 14px 35px;
             border-radius: 50px;
-            font-weight: bold;
+            font-size: 16px;
+            font-weight: 500;
             cursor: pointer;
-            transition: 0.3s;
-            text-decoration: none;
-            display: inline-block;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
         }
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        
+        .copy-btn:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
         }
-        .error {
-            color: #ff6b6b;
-            margin-bottom: 20px;
-        }
-        .hidden {
-            display: none;
+        
+        .redirect-message {
+            margin-top: 30px;
+            font-size: 14px;
+            color: #6c757d;
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Conteúdo se NÃO veio pelo Linkvertise -->
-        <div id="blocked-view">
-            <h1>🔒 Acesso Restrito</h1>
-            <p>Você precisa acessar esta página através do Linkvertise.</p>
-            <p class="error">Redirecionando em <span id="countdown">5</span> segundos...</p>
-            <a href="https://link-target.net/1367187/COKrRDD8K680" class="btn">Ir para Linkvertise Agora</a>
+    <!-- Conteúdo quando acesso é permitido -->
+    <div class="key-container" id="key-view">
+        <h1>Chave Liberada!</h1>
+        <p>Sua chave de acesso é:</p>
+        
+        <div class="key-display" id="key">
+            CHAVE-EXEMPLO-1234-ABCD
         </div>
+        
+        <button class="copy-btn" id="copy-btn">Copiar Chave</button>
+        
+        <p class="redirect-message">Você será redirecionado automaticamente em 30 segundos...</p>
+    </div>
 
-        <!-- Conteúdo se veio pelo Linkvertise -->
-        <div id="key-view" class="hidden">
-            <h1>✅ Chave Liberada!</h1>
-            <p>Sua chave de acesso é:</p>
-            <div class="key" id="key">CHAVE-EXEMPLO-1234-ABCD</div>
-            <button class="btn" id="copy-btn">Copiar Chave</button>
-        </div>
+    <!-- Conteúdo quando acesso é negado (inicialmente oculto) -->
+    <div class="key-container" id="blocked-view" style="display: none;">
+        <h1>Acesso Restrito</h1>
+        <p>Você precisa acessar esta página através do Linkvertise.</p>
+        <p style="color: #dc3545; margin: 20px 0;">Redirecionando em <span id="countdown">5</span> segundos...</p>
+        <a href="https://link-target.net/1367187/COKrRDD8K680" class="copy-btn">Ir para Linkvertise Agora</a>
     </div>
 
     <script>
-        // Verifica se veio pelo Linkvertise e se é o executor
+        // Verificação de origem
         function checkAccess() {
             const urlParams = new URLSearchParams(window.location.search);
             const referer = document.referrer;
             
-            // Verifica se tem o token secreto do executor
-            const executorToken = urlParams.get('executor_token');
-            const validToken = 'EXECUTOR_SECRET_123'; // Altere para seu token secreto
-            
-            // Se tiver o token correto, permite acesso direto
-            if (executorToken === validToken) {
+            // Verificação para executor
+            if (urlParams.get('executor_token') === 'SPECTRO_SECRET_TOKEN_XYZ123') {
                 return true;
             }
             
-            // Se veio pelo Linkvertise
+            // Verificação para Linkvertise
             if (urlParams.get('from_linkvertise') === 'true' || 
                 referer.includes('link-target.net') || 
                 referer.includes('linkvertise.com')) {
@@ -108,29 +132,44 @@
             return false;
         }
 
-        // Redireciona para o Linkvertise se não passou na verificação
+        // Controle de exibição
         if (!checkAccess()) {
-            const countdownEl = document.getElementById('countdown');
+            document.getElementById('key-view').style.display = 'none';
+            document.getElementById('blocked-view').style.display = 'block';
+            
+            // Redirecionamento automático
             let seconds = 5;
-
+            const countdownEl = document.getElementById('countdown');
+            
             const timer = setInterval(() => {
                 seconds--;
                 countdownEl.textContent = seconds;
+                
                 if (seconds <= 0) {
                     clearInterval(timer);
                     window.location.href = "https://link-target.net/1367187/COKrRDD8K680";
                 }
             }, 1000);
         } else {
-            // Mostra a chave
-            document.getElementById('blocked-view').classList.add('hidden');
-            document.getElementById('key-view').classList.remove('hidden');
-
-            // Botão de copiar
+            // Configuração para quando o acesso é permitido
             document.getElementById('copy-btn').addEventListener('click', () => {
                 navigator.clipboard.writeText(document.getElementById('key').textContent);
-                alert('Chave copiada!');
+                
+                // Feedback visual
+                const btn = document.getElementById('copy-btn');
+                btn.textContent = 'Copiado!';
+                btn.style.background = '#00b894';
+                
+                setTimeout(() => {
+                    btn.textContent = 'Copiar Chave';
+                    btn.style.background = 'var(--primary)';
+                }, 2000);
             });
+            
+            // Redirecionamento após 30 segundos
+            setTimeout(() => {
+                window.location.href = "https://link-target.net/1367187/COKrRDD8K680";
+            }, 30000);
         }
     </script>
 </body>
