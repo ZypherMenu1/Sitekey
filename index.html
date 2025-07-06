@@ -4,31 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Verificação de Acesso</title>
-    <script>
-        function verificarOrigem() {
-            // URL do Linkvertise
-            const linkvertiseUrl = "https://link-target.net/1367187/COKrRDD8K680";
-            // Verifica se o usuário veio pelo link correto
-            if (document.referrer === linkvertiseUrl) {
-                // Permite acesso ao conteúdo
-                document.getElementById("conteudo").style.display = "block";
-                document.getElementById("mensagem").style.display = "none";
-            } else {
-                // Bloqueia acesso e mostra mensagem
-                document.getElementById("conteudo").style.display = "none";
-                document.getElementById("mensagem").style.display = "block";
-            }
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f4;
         }
-    </script>
+        .container {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .message {
+            color: red;
+            font-weight: bold;
+        }
+    </style>
 </head>
-<body onload="verificarOrigem()">
-    <div id="conteudo" style="display:none;">
-        <h1>Bem-vindo!</h1>
-        <p>Aqui está a sua chave: <strong>SUA_CHAVE_AQUI</strong></p>
-    </div>
-    <div id="mensagem" style="display:none;">
-        <h1>Acesso Negado</h1>
-        <p>Você precisa acessar o site pelo Linkvertise primeiro.</p>
-    </div>
+<body>
+
+<div class="container">
+    <h1>Bem-vindo!</h1>
+    <div id="message" class="message"></div>
+    <button id="accessButton">Obter Chave</button>
+</div>
+
+<script>
+    const linkvertiseUrl = "https://link-target.net/1367187/COKrRDD8K680";
+    const referrer = document.referrer;
+
+    document.getElementById('accessButton').addEventListener('click', function() {
+        if (referrer.includes(linkvertiseUrl)) {
+            document.getElementById('message').innerText = "Aqui está sua chave: ABC123XYZ";
+        } else {
+            document.getElementById('message').innerText = "Você precisa acessar pelo Linkvertise primeiro.";
+        }
+    });
+</script>
+
 </body>
 </html>
