@@ -1,176 +1,302 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chave Liberada!</title>
+    <title>Spectro Menu - O melhor mod menu para jogos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
-        
         :root {
-            --primary: #6c5ce7;
-            --secondary: #a29bfe;
-            --dark: #2d3436;
-            --light: #f5f6fa;
-        }
-        
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
+            --primary: #6d28d9;
+            --primary-dark: #5b21b6;
         }
         
         body {
-            background-color: #f8f9fa;
-            color: var(--dark);
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            font-family: 'Segoe UI', 'Roboto', sans-serif;
+            background-color: #0f172a;
+            color: #e2e8f0;
         }
         
-        .key-container {
-            background: white;
-            border-radius: 12px;
-            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.1);
-            width: 100%;
-            max-width: 450px;
-            padding: 40px;
-            text-align: center;
+        .gradient-text {
+            background: linear-gradient(90deg, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
         
-        h1 {
-            color: var(--primary);
-            margin-bottom: 25px;
-            font-size: 28px;
-            font-weight: 600;
+        .glow {
+            box-shadow: 0 0 15px rgba(139, 92, 246, 0.5);
         }
         
-        .key-display {
-            background: #f1f3f5;
-            padding: 20px;
-            border-radius: 8px;
-            margin: 25px 0;
-            font-size: 20px;
-            font-weight: 500;
-            letter-spacing: 1px;
-            color: var(--dark);
-            border: 2px dashed #dee2e6;
-            word-break: break-all;
-        }
-        
-        .copy-btn {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 14px 35px;
-            border-radius: 50px;
-            font-size: 16px;
-            font-weight: 500;
-            cursor: pointer;
+        .feature-card {
             transition: all 0.3s ease;
-            margin-top: 15px;
-            box-shadow: 0 4px 15px rgba(108, 92, 231, 0.3);
+            border: 1px solid rgba(109, 40, 217, 0.2);
+            background: linear-gradient(145deg, #1e293b, #0f172a);
         }
         
-        .copy-btn:hover {
-            background: var(--secondary);
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(108, 92, 231, 0.4);
+        .feature-card:hover {
+            transform: translateY(-5px);
+            border-color: rgba(109, 40, 217, 0.5);
         }
         
-        .redirect-message {
-            margin-top: 30px;
-            font-size: 14px;
-            color: #6c757d;
+        .download-btn {
+            transition: all 0.3s ease;
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+        }
+        
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(109, 40, 217, 0.4);
+        }
+        
+        .screenshots-container {
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary) rgba(109, 40, 217, 0.1);
+        }
+        
+        .screenshots-container::-webkit-scrollbar {
+            height: 6px;
+        }
+        
+        .screenshots-container::-webkit-scrollbar-thumb {
+            background-color: var(--primary);
+            border-radius: 4px;
         }
     </style>
 </head>
 <body>
-    <!-- Conteúdo quando acesso é permitido -->
-    <div class="key-container" id="key-view">
-        <h1>Chave Liberada!</h1>
-        <p>Sua chave de acesso é:</p>
-        
-        <div class="key-display" id="key">
-            CHAVE-EXEMPLO-1234-ABCD
+    <nav class="bg-gray-900/80 backdrop-blur-sm border-b border-gray-800 fixed w-full z-50">
+        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-ghost text-purple-500 text-2xl mr-2"></i>
+                        <span class="text-white font-bold text-xl gradient-text">SPECTRO MENU</span>
+                    </div>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-center space-x-4">
+                        <a href="#features" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Recursos</a>
+                        <a href="#download" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Download</a>
+                    </div>
+                </div>
+                <div class="md:hidden">
+                    <button id="mobile-menu-button" class="text-gray-300 hover:text-white focus:outline-none">
+                        <i class="fas fa-bars"></i>
+                    </button>
+                </div>
+            </div>
         </div>
         
-        <button class="copy-btn" id="copy-btn">Copiar Chave</button>
+        <!-- Mobile menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-gray-900/95">
+            <div class="px-2 pt-2 pb-3 space-y-1 sm:px-3">
+                <a href="#features" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Recursos</a>
+                <a href="#screenshots" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Screenshots</a>
+                <a href="#download" class="text-gray-300 hover:text-white block px-3 py-2 rounded-md text-base font-medium">Download</a>
+            </div>
+        </div>
+    </nav>
+    
+    <div class="pt-16 pb-12">
+        <section class="relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-28 relative z-10">
+                <div class="md:grid md:grid-cols-2 md:gap-12 items-center">
+                    <div class="mb-10 md:mb-0">
+                        <h1 class="text-4xl md:text-6xl font-extrabold mb-4">
+                            <span class="gradient-text">Spectro Menu</span><br>
+                            O melhor mod menu para seus jogos
+                        </h1>
+                        <p class="text-lg text-gray-400 mb-6 max-w-lg">
+                            Desbloqueie todo o potencial dos seus jogos favoritos com nosso menu de modificação premium. Interface intuitiva, recursos avançados e atualizações constantes.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4">
+                            <button id="downloadButtonHero" class="download-btn text-white font-bold py-3 px-6 rounded-lg text-lg">
+                                <i class="fas fa-download mr-2"></i> Baixar Loader
+                            </button>
+                            <a href="#features" class="text-white hover:text-purple-400 font-medium py-3 px-6 rounded-lg text-lg border border-purple-500 flex items-center justify-center">
+                                <i class="fas fa-info-circle mr-2"></i> Saiba mais
+                            </a>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <div class="glow w-full h-80 bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-xl flex items-center justify-center p-4">
+                            <img src="https://cdn.discordapp.com/attachments/1221565388932780114/1391362826626400307/ChatGPT_Image_4_07_2025_17_56_27.png?ex=686b9f1c&is=686a4d9c&hm=4c15048de0af5bf67b6f9f8636be633db21e3e5cd31fb521eb8910ab224c562a&" alt="Interface do Spectro Menu mostrando o menu aberto em um jogo com diversas opções e atalhos" class="rounded-lg border border-purple-500/30" />
+                        </div>
+                        <div class="absolute -top-5 -right-5 w-24 h-24 bg-purple-500 rounded-full filter blur-3xl opacity-20"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute -bottom-32 -left-32 w-64 h-64 bg-pink-500 rounded-full filter blur-3xl opacity-20"></div>
+        </section>
         
-        <p class="redirect-message">Você será redirecionado automaticamente em 30 segundos...</p>
+        <section id="features" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <h2 class="text-3xl font-extrabold text-white sm:text-4xl mb-4">
+                    Recursos <span class="gradient-text">Exclusivos</span>
+                </h2>
+                <p class="text-xl text-gray-400">
+                    O Spectro Menu foi projetado para oferecer a melhor experiência de moderação, com recursos avançados e interface intuitiva.
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="feature-card p-6 rounded-xl">
+                    <div class="w-14 h-14 bg-purple-500/10 rounded-lg mb-4 flex items-center justify-center">
+                        <i class="fas fa-rocket text-purple-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Desempenho Otimizado</h3>
+                    <p class="text-gray-400">
+                        Código altamente otimizado que não sobrecarrega seu sistema, garantindo experiência suave mesmo em computadores mais fracos.
+                    </p>
+                </div>
+                
+                <div class="feature-card p-6 rounded-xl">
+                    <div class="w-14 h-14 bg-purple-500/10 rounded-lg mb-4 flex items-center justify-center">
+                        <i class="fas fa-shield-alt text-purple-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Proteção Avançada</h3>
+                    <p class="text-gray-400">
+                        Sistemas anti-detecção avançados que mantêm seu perfil seguro, com atualizações constantes contra novas medidas de segurança.
+                    </p>
+                </div>
+                
+                <div class="feature-card p-6 rounded-xl">
+                    <div class="w-14 h-14 bg-purple-500/10 rounded-lg mb-4 flex items-center justify-center">
+                        <i class="fas fa-puzzle-piece text-purple-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Compatibilidade</h3>
+                    <p class="text-gray-400">
+                        Suporte para múltiplos jogos e versões. Sistema de perfis que permite configurações personalizadas para cada jogo.
+                    </p>
+                </div>
+                
+                <div class="feature-card p-6 rounded-xl">
+                    <div class="w-14 h-14 bg-purple-500/10 rounded-lg mb-4 flex items-center justify-center">
+                        <i class="fas fa-sliders-h text-purple-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Customização Total</h3>
+                    <p class="text-gray-400">
+                        Interface completamente personalizável com temas, atalhos e layouts adaptáveis às suas necessidades.
+                    </p>
+                </div>
+                
+                <div class="feature-card p-6 rounded-xl">
+                    <div class="w-14 h-14 bg-purple-500/10 rounded-lg mb-4 flex items-center justify-center">
+                        <i class="fas fa-sync-alt text-purple-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Atualizações Constantes</h3>
+                    <p class="text-gray-400">
+                        Novos recursos e correções frequentes. Sistema de atualização automática para manter seu menu sempre na versão mais recente.
+                    </p>
+                </div>
+                
+                <div class="feature-card p-6 rounded-xl">
+                    <div class="w-14 h-14 bg-purple-500/10 rounded-lg mb-4 flex items-center justify-center">
+                        <i class="fas fa-users text-purple-500 text-2xl"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-white mb-2">Suporte Ativo</h3>
+                    <p class="text-gray-400">
+                        Comunidade de usuários ativa e equipe de suporte pronta para ajudar com qualquer dúvida ou problema que possa surgir.
+                    </p>
+                </div>
+            </div>
+        </section>
+        
+        <section id="download" class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div class="bg-gradient-to-br from-purple-900/30 to-pink-900/30 rounded-2xl p-8 md:p-12 relative overflow-hidden">
+                <div class="absolute -top-20 -right-20 w-64 h-64 bg-purple-500 rounded-full filter blur-3xl opacity-10"></div>
+                <div class="absolute -bottom-20 -left-20 w-64 h-64 bg-pink-500 rounded-full filter blur-3xl opacity-10"></div>
+                
+                <div class="relative z-10">
+                    <div class="max-w-3xl mx-auto text-center">
+                        <h2 class="text-3xl md:text-4xl font-extrabold text-white mb-6">
+                            Pronto para levar seus jogos <span class="gradient-text">ao próximo nível</span>?
+                        </h2>
+                        <p class="text-xl text-gray-300 mb-8">
+                            Baixe agora o Spectro Menu Loader e comece a desfrutar de todos os recursos que o melhor menu de mods pode oferecer.
+                        </p>
+                        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+                            <button id="downloadButton" class="download-btn text-white font-bold py-4 px-8 rounded-lg text-lg flex items-center justify-center">
+                                <i class="fas fa-download mr-3"></i> Baixar Spectro Loader
+                            </button>
+                            <a href="#" class="text-white hover:text-purple-400 font-medium py-4 px-8 rounded-lg text-lg border border-purple-500 flex items-center justify-center">
+                                <i class="fas fa-book mr-3"></i> Documentação
+                            </a>
+                        </div>
+                        <p class="text-sm text-gray-500 mt-6">
+                            * Compatível com Windows 10/11. Requer .NET Framework 4.8 ou superior.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
     </div>
-
-    <!-- Conteúdo quando acesso é negado (inicialmente oculto) -->
-    <div class="key-container" id="blocked-view" style="display: none;">
-        <h1>Acesso Restrito</h1>
-        <p>Você precisa acessar esta página através do Linkvertise.</p>
-        <p style="color: #dc3545; margin: 20px 0;">Redirecionando em <span id="countdown">5</span> segundos...</p>
-        <a href="https://link-target.net/1367187/COKrRDD8K680" class="copy-btn">Ir para Linkvertise Agora</a>
-    </div>
-
+    
+    <footer class="bg-gray-900/80 border-t border-gray-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <div class="md:flex md:items-center md:justify-between">
+                <div class="flex justify-center md:justify-start">
+                    <div class="flex-shrink-0 flex items-center">
+                        <i class="fas fa-ghost text-purple-500 text-xl mr-2"></i>
+                        <span class="text-white font-bold gradient-text">SPECTRO MENU</span>
+                    </div>
+                </div>
+                <div class="mt-4 md:mt-0">
+                    <div class="flex space-x-6 justify-center md:justify-start">
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-discord text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-youtube text-xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-400 hover:text-white">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="mt-8 border-t border-gray-800 pt-8 md:flex md:items-center md:justify-between">
+                <p class="text-center text-sm text-gray-500 md:text-left">
+                    © 2023 Spectro Menu. Todos os direitos reservados.
+                </p>
+                <div class="mt-4 md:mt-0 flex justify-center space-x-6">
+                    <a href="#" class="text-sm text-gray-500 hover:text-white">Termos de Serviço</a>
+                    <a href="#" class="text-sm text-gray-500 hover:text-white">Política de Privacidade</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
     <script>
-        // Verificação de origem
-        function checkAccess() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const referer = document.referrer;
-            
-            // Verificação para executor
-            if (urlParams.get('executor_token') === 'SPECTRO_SECRET_TOKEN_XYZ123') {
-                return true;
-            }
-            
-            // Verificação para Linkvertise
-            if (urlParams.get('from_linkvertise') === 'true' || 
-                referer.includes('link-target.net') || 
-                referer.includes('linkvertise.com')) {
-                return true;
-            }
-            
-            return false;
-        }
-
-        // Controle de exibição
-        if (!checkAccess()) {
-            document.getElementById('key-view').style.display = 'none';
-            document.getElementById('blocked-view').style.display = 'block';
-            
-            // Redirecionamento automático
-            let seconds = 5;
-            const countdownEl = document.getElementById('countdown');
-            
-            const timer = setInterval(() => {
-                seconds--;
-                countdownEl.textContent = seconds;
-                
-                if (seconds <= 0) {
-                    clearInterval(timer);
-                    window.location.href = "https://link-target.net/1367187/COKrRDD8K680";
+        // Mobile menu toggle
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+        
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth'
+                    });
                 }
-            }, 1000);
-        } else {
-            // Configuração para quando o acesso é permitido
-            document.getElementById('copy-btn').addEventListener('click', () => {
-                navigator.clipboard.writeText(document.getElementById('key').textContent);
-                
-                // Feedback visual
-                const btn = document.getElementById('copy-btn');
-                btn.textContent = 'Copiado!';
-                btn.style.background = '#00b894';
-                
-                setTimeout(() => {
-                    btn.textContent = 'Copiar Chave';
-                    btn.style.background = 'var(--primary)';
-                }, 2000);
             });
-            
-            // Redirecionamento após 30 segundos
-            setTimeout(() => {
-                window.location.href = "https://link-target.net/1367187/COKrRDD8K680";
-            }, 30000);
-        }
+        });
+        
+        // Download buttons functionality
+        document.getElementById('downloadButton').addEventListener('click', function() {
+            window.location.href = "SEU_LINK_DE_DOWNLOAD_AQUI";
+        });
+
+        document.getElementById('downloadButtonHero').addEventListener('click', function() {
+            window.location.href = "SEU_LINK_DE_DOWNLOAD_AQUI";
+        });
     </script>
 </body>
 </html>
