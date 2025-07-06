@@ -84,22 +84,32 @@
     </div>
 
     <script>
-        // Verifica se veio pelo Linkvertise (simplificado)
-        function checkLinkvertise() {
+        // Verifica se veio pelo Linkvertise e se é o executor
+        function checkAccess() {
             const urlParams = new URLSearchParams(window.location.search);
             const referer = document.referrer;
-
-            // Se tiver o parâmetro ?from_linkvertise=true OU veio do domínio do Linkvertise
+            
+            // Verifica se tem o token secreto do executor
+            const executorToken = urlParams.get('executor_token');
+            const validToken = 'EXECUTOR_SECRET_123'; // Altere para seu token secreto
+            
+            // Se tiver o token correto, permite acesso direto
+            if (executorToken === validToken) {
+                return true;
+            }
+            
+            // Se veio pelo Linkvertise
             if (urlParams.get('from_linkvertise') === 'true' || 
                 referer.includes('link-target.net') || 
                 referer.includes('linkvertise.com')) {
                 return true;
             }
+            
             return false;
         }
 
         // Redireciona para o Linkvertise se não passou na verificação
-        if (!checkLinkvertise()) {
+        if (!checkAccess()) {
             const countdownEl = document.getElementById('countdown');
             let seconds = 5;
 
