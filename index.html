@@ -3,49 +3,125 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verificação de Acesso</title>
+    <title>🔑 Obtenha Sua Chave</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            margin: 0;
+            padding: 0;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
-            background-color: #f4f4f4;
+            text-align: center;
         }
         .container {
-            text-align: center;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 90%;
         }
-        .message {
-            color: red;
+        h1 {
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+        .key {
+            background: rgba(0, 0, 0, 0.2);
+            padding: 15px;
+            border-radius: 8px;
+            font-family: monospace;
+            font-size: 18px;
+            margin: 20px 0;
+            word-break: break-all;
+        }
+        .btn {
+            background: white;
+            color: #2575fc;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
             font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        .error {
+            color: #ff6b6b;
+            margin-bottom: 20px;
+        }
+        .hidden {
+            display: none;
         }
     </style>
 </head>
 <body>
+    <div class="container">
+        <!-- Conteúdo se NÃO veio pelo Linkvertise -->
+        <div id="blocked-view">
+            <h1>🔒 Acesso Restrito</h1>
+            <p>Você precisa acessar esta página através do Linkvertise.</p>
+            <p class="error">Redirecionando em <span id="countdown">5</span> segundos...</p>
+            <a href="https://link-target.net/1367187/COKrRDD8K680" class="btn">Ir para Linkvertise Agora</a>
+        </div>
 
-<div class="container">
-    <h1>Bem-vindo!</h1>
-    <div id="message" class="message"></div>
-    <button id="accessButton">Obter Chave</button>
-</div>
+        <!-- Conteúdo se veio pelo Linkvertise -->
+        <div id="key-view" class="hidden">
+            <h1>✅ Chave Liberada!</h1>
+            <p>Sua chave de acesso é:</p>
+            <div class="key" id="key">CHAVE-EXEMPLO-1234-ABCD</div>
+            <button class="btn" id="copy-btn">Copiar Chave</button>
+        </div>
+    </div>
 
-<script>
-    const linkvertiseUrl = "https://link-target.net/1367187/COKrRDD8K680";
-    const referrer = document.referrer;
+    <script>
+        // Verifica se veio pelo Linkvertise (simplificado)
+        function checkLinkvertise() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const referer = document.referrer;
 
-    document.getElementById('accessButton').addEventListener('click', function() {
-        if (referrer.includes(linkvertiseUrl)) {
-            document.getElementById('message').innerText = "Aqui está sua chave: ABC123XYZ";
-        } else {
-            document.getElementById('message').innerText = "Você precisa acessar pelo Linkvertise primeiro.";
+            // Se tiver o parâmetro ?from_linkvertise=true OU veio do domínio do Linkvertise
+            if (urlParams.get('from_linkvertise') === 'true' || 
+                referer.includes('link-target.net') || 
+                referer.includes('linkvertise.com')) {
+                return true;
+            }
+            return false;
         }
-    });
-</script>
 
+        // Redireciona para o Linkvertise se não passou na verificação
+        if (!checkLinkvertise()) {
+            const countdownEl = document.getElementById('countdown');
+            let seconds = 5;
+
+            const timer = setInterval(() => {
+                seconds--;
+                countdownEl.textContent = seconds;
+                if (seconds <= 0) {
+                    clearInterval(timer);
+                    window.location.href = "https://link-target.net/1367187/COKrRDD8K680";
+                }
+            }, 1000);
+        } else {
+            // Mostra a chave
+            document.getElementById('blocked-view').classList.add('hidden');
+            document.getElementById('key-view').classList.remove('hidden');
+
+            // Botão de copiar
+            document.getElementById('copy-btn').addEventListener('click', () => {
+                navigator.clipboard.writeText(document.getElementById('key').textContent);
+                alert('Chave copiada!');
+            });
+        }
+    </script>
 </body>
 </html>
